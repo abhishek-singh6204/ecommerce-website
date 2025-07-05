@@ -143,7 +143,7 @@ export default function ShoppingHeader() {
                         <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
                             <div className='relative' style={{padding:"3px"}}>
                             <ShoppingCartIcon className='cursor-pointer relative' onClick={() => handleShopClick()} />
-                            <span className='absolute top-[-7px] right-[0] text-sm font-bold'>{cartItems.length}</span>
+                            <span className='absolute top-[-7px] right-[0] text-sm font-bold'>{cartItems?.length}</span>
                             </div>
                             <CartWrapper cartItems={cartItems} setOpenCartSheet={setOpenCartSheet}/>
                         </Sheet>

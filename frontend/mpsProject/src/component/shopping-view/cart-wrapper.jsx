@@ -37,7 +37,7 @@ function CartWrapper({ cartItems,setOpenCartSheet }) {
                         </span>
                     </div>
                 </div>
-                <Button className='w-full bg-background cursor-pointer checkoutbtn' disabled={cartItems.length === 0}  style={{ marginTop: "20px" }} onClick={()=>handleCheckout()}>Checkout</Button>
+                <Button className='w-full bg-background cursor-pointer checkoutbtn' disabled={cartItems?.length === 0}  style={{ marginTop: "20px" }} onClick={()=>handleCheckout()}>Checkout</Button>
             </SheetHeader>
         </SheetContent>
     );
