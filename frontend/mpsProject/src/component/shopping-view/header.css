@@ -1,0 +1,17 @@
+.toggleHeader{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background-color: #fff;
+    width: 250px;
+    padding: 20px 25px;
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.avtar:hover .aboutProfile{
+    display: block !important;
+}

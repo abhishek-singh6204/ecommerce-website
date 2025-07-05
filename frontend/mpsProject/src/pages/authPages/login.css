@@ -1,0 +1,54 @@
+input{
+    margin-bottom: 15px;
+    padding:6px 10px ;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 0px 0px 0px 0.2px gray;
+}
+label{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+h1{
+    margin-bottom: 20px;
+}
+span{
+    margin-bottom: 15px;
+}
+.loginform{width: 400px;
+}
+.lgbtn{
+    padding: 3px;
+    background: rgb(47, 82, 208) !important;
+}
+.checkoutbtn{
+    padding: 3px;
+    background: rgb(47, 82, 208) ;
+}
+form{
+
+}
+.navigateOrder{
+    padding: 3px 5px;
+    background: rgba(0, 128, 0, 0.646) !important;
+}
+.abcde{
+    padding: 0px 100px !important;
+}
+/* .detailsImg{
+    height: 400px;
+    width: 400px;
+} */
+@media screen and (max-width:876px) {
+    .abcde{
+    padding: 0px 30px !important;
+}
+}
+@media screen and (max-width:768px) {
+    .detailsImg{
+    height: 200px;
+    width: 200px;
+}
+}
