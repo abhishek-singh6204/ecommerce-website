@@ -27,7 +27,8 @@ function App() {
 const {isAuthenticated,user} =useSelector(state=>state.auth);
 const dispatch=useDispatch();
 useEffect(()=>{
-  dispatch(checkAuthorize());
+  const token=JSON.parse(sessionStorage.getItem('token'));
+  dispatch(checkAuthorize(token));
 },[dispatch]);
   return (
     <div>

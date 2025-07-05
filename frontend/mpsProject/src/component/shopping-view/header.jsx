@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Logout } from '../../store/authSlice';
+import { Logout, resetTokenAndCredentials } from '../../store/authSlice';
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import CartWrapper from './cart-wrapper';
 import { getCartItems } from '@/store/cartSlice';
@@ -67,6 +67,11 @@ export default function ShoppingHeader() {
     function handleShopClick() {
         setOpenCartSheet(true);
         // navigate("/shop/checkout");
+    }
+    function handleLogout(){
+        dispatch(resetTokenAndCredentials());
+        sessionStorage.clear();
+        navigate('/auth/login')
     }
     const [istoggleheader, setIstoggleHeader] = useState(false);
     if (istoggleheader) {
@@ -166,7 +171,7 @@ export default function ShoppingHeader() {
                                     <PersonAddAltIcon />
                                     <span style={{ margin: "0px" }}> Account</span>
                                 </div>
-                                <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "0px 0px 0px 0px" }} onClick={() => dispatch(Logout())}>
+                                <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "0px 0px 0px 0px" }} onClick={handleLogout}>
                                     <LogoutIcon />
                                     <span style={{ margin: "0px" }}> Logout</span>
                                 </div>

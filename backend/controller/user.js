@@ -72,9 +72,20 @@ async function Login(req, res) {
         const token = jwt.sign({
             id: user._id, role: user.role, email: user.email,username:user.username
         }, 'secret_key', { expiresIn: "10m" });
-        res.cookie('token', token, { httpOnly: true, secure: true }).json({
+        // res.cookie('token', token, { httpOnly: true, secure: true }).json({
+        //     success: true,
+        //     message: "sucessfully logged in",
+        //     user: {
+        //         email: user.email,
+        //         role: user.role,
+        //         id: user._id,
+        //         username:user.username,
+        //     }
+        // })
+        res.status(200).json({
             success: true,
             message: "sucessfully logged in",
+            token,
             user: {
                 email: user.email,
                 role: user.role,
@@ -103,10 +114,35 @@ function logout(req,res){
 
 
 
-const authMiddleware = (req, res, next) => {
-    const token = req.cookies?.token; // Safe check for cookies
-    // console.log("Token:", token);
+// const authMiddleware = (req, res, next) => {
+//     const token = req.cookies?.token; // Safe check for cookies
+//     // console.log("Token:", token);
 
+//     if (!token) {
+//         return res.status(401).json({
+//             success: false,
+//             message: "Unauthorized User"
+//         });
+//     }
+
+//     try {
+//         let decoded = jwt.verify(token, 'secret_key'); // Use verify instead of decode
+//         req.user = decoded;
+//         next();
+//     } catch (err) {
+//         console.error("JWT Error:", err.message);
+//         return res.status(401).json({
+//             success: false,
+//             message: "Invalid Token"
+//         });
+//     }
+// };
+
+const authMiddleware = (req, res, next) => {
+    // const token = req.cookies?.token; // Safe check for cookies
+    // console.log("Token:", token);
+    const authHeader=req.headers['authorization'];
+    const token=authHeader && authHeader.split(' ')[1];
     if (!token) {
         return res.status(401).json({
             success: false,
@@ -126,4 +162,6 @@ const authMiddleware = (req, res, next) => {
         });
     }
 };
+
+
 module.exports = { signup, Login ,logout,authMiddleware};
