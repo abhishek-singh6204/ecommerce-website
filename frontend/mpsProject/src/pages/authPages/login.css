@@ -41,6 +41,9 @@ form{
     height: 400px;
     width: 400px;
 } */
+ .loginSignup{
+
+ }
 @media screen and (max-width:876px) {
     .abcde{
     padding: 0px 30px !important;
@@ -51,4 +54,15 @@ form{
     height: 200px;
     width: 200px;
 }
+}
+@media screen and (max-width:576px) {
+    .loginSignup{
+        width: 100% !important;
+ }
+ .loginform{
+    width: 100% !important;
+ }
+ .bgLoginSignup{
+    display: none !important;
+ }
 }

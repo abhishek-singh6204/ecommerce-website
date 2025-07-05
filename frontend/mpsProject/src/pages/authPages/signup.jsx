@@ -59,7 +59,7 @@ export default function SignupPage() {
                 <input type="password" id="password" name='password' value={formdata.password} onChange={handleChange} placeholder="enter password" required />
 
                 <span className="text-center" style={{ fontSize: "15px", color: "gray" }}>Already have an account <Link to={"/auth/login"} className='font-bold text-black'> login</Link> </span>
-                <button type='submit' onClick={handleclick}>Signup</button>
+                <button type='submit' onClick={handleclick} className='lgbtn'>Signup</button>
             </div>
         </form>
     );
