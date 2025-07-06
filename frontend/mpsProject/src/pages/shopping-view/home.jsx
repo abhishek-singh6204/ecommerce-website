@@ -27,7 +27,7 @@ export default function ShoppingHome() {
     const [openDetailsDialog, setOpenDetailedDialog] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { cartItems } = useSelector(state => state.cartProducts || []);
+    const {cartItems } = useSelector(state => state.cartProducts || []);
 
     const category = [
         { id: "men", label: "Men", icon: ShirtIcon },
@@ -61,11 +61,11 @@ export default function ShoppingHome() {
     }
     // console.log(productDetails, 'productdetails');
     function handleAddToCart(productId, stock) {
-        // console.log(productId);
+        console.log(productId,stock);
         // console.log(user.id, user.username);
         const getItems = cartItems;
         console.log(getItems);
-        if (getCartItems.length) {
+        if (getItems.length!==0) {
             const productIndex = getItems.findIndex(indx => indx.productId._id === productId);
             if (productIndex > -1) {
                 const getQuantity = getItems[productIndex].quantity;
@@ -107,6 +107,11 @@ export default function ShoppingHome() {
             console.log(data);
         })
     }, [dispatch]);
+    // useEffect(()=>{
+    //     dispatch(getCartItems(user.id)).then((data)=>{
+    //         console.log(data);
+    //     })
+    // },[dispatch,cartItems])
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrent(prev => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -114,6 +119,8 @@ export default function ShoppingHome() {
 
         return () => clearInterval(interval); // cleanup on unmount
     }, [slides.length]);
+    console.log(cartItems);
+   
     return (
         <div className='flex flex-col '>
             <div className='relative w-full h-[500px] overflow-hidden'>

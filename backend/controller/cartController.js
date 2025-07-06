@@ -58,7 +58,7 @@ const addCartItems = async (req, res) => {
 const deleteCartItems = async (req, res) => {
     try {
         const { userId, productId } = req.params;
-        // console.log(productId);
+        console.log(productId);
         if (!userId || !productId) {
             return res.status(400).json({
                 success: false,

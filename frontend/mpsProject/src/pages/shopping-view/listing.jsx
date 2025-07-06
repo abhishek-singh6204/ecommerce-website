@@ -28,7 +28,7 @@ export default function ShoppingListing() {
     const { shopProductList, productDetails } = useSelector(state => state.shopProducts);
     const { user } = useSelector(state => state.auth);
     const [openDetailsDialog, setOpenDetailedDialog] = useState(false);
-    const { cartItems } = useSelector(state => state.cartProducts || []);
+    const { cartItems } = useSelector(state => state.cartProducts);
     const categorySearchParams = queryParams.get('category');
     function handleDetailed(id) {
         dispatch(getProductDetailes(id));
@@ -37,10 +37,32 @@ export default function ShoppingListing() {
         // console.log(e.target.value);
         setSort(e.target.value);
     }
+    function handleFilter(section_id, current_Option) {
+        // /console.log(section_id,current_Option);
+        let cpyFilters = { ...filters };
+        let indexOfCurrentSection = Object.keys(cpyFilters).indexOf(section_id);
+        if (indexOfCurrentSection === -1) {
+            cpyFilters = {
+                ...cpyFilters,
+                [section_id]: [current_Option]
+            }
+        }
+        else {
+            const indexOfCurrentOption = cpyFilters[section_id].indexOf(current_Option);
+            if (indexOfCurrentOption === -1) {
+                cpyFilters[section_id].push(current_Option);
+            } else {
+                cpyFilters[section_id].splice(indexOfCurrentOption, 1);
+            }
+        }
+        setFilters(cpyFilters);
+        sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
+    }
     function handleAddToCart(productId, stock) {
         const getItems = cartItems;
-        // console.log(getItems);
-        if (getCartItems.length) {
+        console.log(getItems);
+        // console.log(getCartItems);
+        if (getItems.length) {
             const productIndex = getItems.findIndex(indx => indx.productId._id === productId);
             if (productIndex > -1) {
                 const getQuantity = getItems[productIndex].quantity;
@@ -81,29 +103,9 @@ export default function ShoppingListing() {
         if (filters != null && sort != null)
             dispatch(fetchFilteredProducts({ filterparams: filters, sortparams: sort }))
     }, [dispatch, sort, filters])
-    function handleFilter(section_id, current_Option) {
-        // /console.log(section_id,current_Option);
-        let cpyFilters = { ...filters };
-        let indexOfCurrentSection = Object.keys(cpyFilters).indexOf(section_id);
-        if (indexOfCurrentSection === -1) {
-            cpyFilters = {
-                ...cpyFilters,
-                [section_id]: [current_Option]
-            }
-        }
-        else {
-            const indexOfCurrentOption = cpyFilters[section_id].indexOf(current_Option);
-            if (indexOfCurrentOption === -1) {
-                cpyFilters[section_id].push(current_Option);
-            } else {
-                cpyFilters[section_id].splice(indexOfCurrentOption, 1);
-            }
-        }
-        setFilters(cpyFilters);
-        sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
-    }
+    
 
-    // console.log(cartItems,'product');
+    console.log(cartItems,'product');
     return (
         <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap=5" style={{ padding: "20px" }}>
             <ProductFilter filters={filters} handleFilter={handleFilter} setFilters={setFilters} />

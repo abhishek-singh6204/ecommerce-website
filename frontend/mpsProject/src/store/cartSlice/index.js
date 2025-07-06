@@ -8,26 +8,27 @@ const initialState={
 }
 
 export const addToCart=createAsyncThunk("/cart/add",async({userId,productId,quantity})=>{
-    const response=await axios.post("/cart/add",{
+    const response=await axios.post(`${import.meta.env.VITE_API_URL}/cart/add`,{
         userId,productId,quantity
     });
     return response.data;
 });
 export const getCartItems=createAsyncThunk("/cart/get",async(userId)=>{
-    const response=await axios.get(`/cart/get/${userId}`);
+    console.log(userId);
+    const response=await axios.get(`${import.meta.env.VITE_API_URL}/cart/get/${userId}`);
     // console.log(response.data.data.items);
     return response.data;
 });
 export const deleteCartItem=createAsyncThunk("/cart/delete",async({userId,productId})=>{
     // console.log("in cartSlice",productId);
-    const response=await axios.delete(`/cart/delete/${userId}/${productId}`,{
+    const response=await axios.delete(`${import.meta.env.VITE_API_URL}/cart/delete/${userId}/${productId}`,{
     });
     // console.log(response.data,"in cartslice");
     return response.data;
 });
 export const editCartItem=createAsyncThunk("/cart/edit",async({userId,productId,quantity})=>{
     console.log(userId,productId,quantity);
-    const response=await axios.put("/cart/edit",{
+    const response=await axios.put(`${import.meta.env.VITE_API_URL}/cart/edit`,{
         userId,productId,quantity
     });
     // console.log(response?.data,"response")
@@ -51,6 +52,7 @@ const cartSlice=createSlice({
         }).addCase(getCartItems.fulfilled,(state,action)=>{
             state.isLoading=false,
             console.log("hello"),
+            console.log(action?.payload?.data);
             state.cartItems=action?.payload?.data?.items
         }).addCase(getCartItems.rejected,(state)=>{
             state.isLoading=false,

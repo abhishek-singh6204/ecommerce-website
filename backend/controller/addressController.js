@@ -4,7 +4,7 @@ const addAddress = async (req, res) => {
         // console.log("in route");
         const { userId, address, pincode, city, phone, notes } = req.body;
         if (!userId || !address || !pincode || !city || !phone || !notes) {
-            res.status(400).json({
+          return  res.status(400).json({
                 success: false,
                 message: "Invalid Data Provided"
             });
@@ -29,19 +29,19 @@ const fetchAllAddress = async (req, res) => {
     try {
         const { userId } = req.params;
         if (!userId) {
-            res.status(400).json({
+          return  res.status(400).json({
                 success: false,
                 message: "Userid is required"
             });
         }
         const addressList = await Address.find({ userId });
         if (addressList.length <= 0) {
-            res.status(400).json({
+          return  res.status(400).json({
                 success: false,
                 message: "Address Not Found!"
             });
         }
-        res.status(200).json({
+       return res.status(200).json({
             success: true,
             data: addressList
         });
