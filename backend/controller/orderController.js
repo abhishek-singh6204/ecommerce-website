@@ -83,9 +83,9 @@ const capturePayment = async (req, res) => {
 
     try {
         const { orderId } = req.body;
-        console.log(orderId, 'aaaaa');
+        // console.log(orderId, 'aaaaa');
         const order = await Order.findById(orderId);
-        console.log(order);
+        // console.log(order);
         if (!order) {
             return res.status(500).json({
                 success: false,
@@ -108,10 +108,14 @@ const capturePayment = async (req, res) => {
             product.totalStock-=item.quantity;
             await product.save();
         }
-        console.log(cartId);
-        const deletedCart = await Cart.findByIdAndDelete(cartId);
-        await Cart.deleteOne({ userId: cartId })
-        // console.log(deletedCart);
+        // console.log(cartId);
+        // const deletedCart = await Cart.findByIdAndDelete(cartId);
+        const deleteCart=await Cart.findOneAndDelete({ userId:new mongoose.Types.ObjectId(cartId) });
+
+        console.log(deleteCart,'del');
+        await Cart.findOne({userId:cartId}).then((data)=>{
+            console.log(data,"after confirmation");
+        })
         await order.save();
         res.status(500).json({
             success: true,

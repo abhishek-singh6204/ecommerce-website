@@ -119,7 +119,7 @@ export default function ShoppingHome() {
 
         return () => clearInterval(interval); // cleanup on unmount
     }, [slides.length]);
-    console.log(cartItems);
+    // console.log(cartItems);
    
     return (
         <div className='flex flex-col '>

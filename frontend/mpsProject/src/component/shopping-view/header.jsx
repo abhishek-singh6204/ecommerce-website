@@ -21,24 +21,24 @@ import { Label } from '@radix-ui/react-label';
 // import {user} from 
 
 function NavLinks() {
-    const navigate=useNavigate();
-    const location=useLocation();
-    const [searchParams,setSearchParams]=useSearchParams();
-    function handleNavClick(nav){
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams();
+    function handleNavClick(nav) {
         console.log(nav);
         sessionStorage.removeItem("filters")
-        const currentFilter=nav.id!=='home' && nav.id!=='products' && nav.id!=='search'? {
-            category:[nav.id]
-        }:null
-        sessionStorage.setItem('filters',JSON.stringify(currentFilter))
-        location.pathname.includes("listings") && currentFilter!==null ? 
-        setSearchParams(new URLSearchParams(`?category=${nav?.id}`)) :
-        navigate(nav.path);
+        const currentFilter = nav.id !== 'home' && nav.id !== 'products' && nav.id !== 'search' ? {
+            category: [nav.id]
+        } : null
+        sessionStorage.setItem('filters', JSON.stringify(currentFilter))
+        location.pathname.includes("listings") && currentFilter !== null ?
+            setSearchParams(new URLSearchParams(`?category=${nav?.id}`)) :
+            navigate(nav.path);
     }
     return (
         userHeadingData.map((nav) => (
             // console.log(nav)
-            <Label onClick={()=>handleNavClick(nav)} className='text-lg font-medium cursor-pointer' key={nav.id} >{nav.label}</Label>
+            <Label onClick={() => handleNavClick(nav)} className='text-lg font-medium cursor-pointer' key={nav.id} >{nav.label}</Label>
         ))
     );
 }
@@ -54,9 +54,11 @@ function NavLink({ istoggleheader, setIstoggleHeader }) {
 export default function ShoppingHeader() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
+
     const { user } = useSelector(state => state.auth);
     const [openCartSheet, setOpenCartSheet] = useState(false);
-    const  {cartItems} = useSelector(state => state.cartProducts || []);
+    const { cartItems } = useSelector(state => state.cartProducts);
 
     // console.log(user);
     // abc.map((a)=>{
@@ -68,7 +70,7 @@ export default function ShoppingHeader() {
         setOpenCartSheet(true);
         // navigate("/shop/checkout");
     }
-    function handleLogout(){
+    function handleLogout() {
         dispatch(resetTokenAndCredentials());
         sessionStorage.clear();
         navigate('/auth/login')
@@ -78,10 +80,22 @@ export default function ShoppingHeader() {
         let abc = document.querySelectorAll(".toggleHeader a");
         console.log(abc)
     }
-    useEffect(()=>{
+    // useEffect(() => {
+    //     dispatch(getCartItems(user?.id));
+    // }, [dispatch])
+    useEffect(() => {
         dispatch(getCartItems(user?.id));
-    },[dispatch])
-    // console.log(cartItems,"cartitems");
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (user?.id) {
+            dispatch(getCartItems(user.id)).then((data)=>{
+                console.log(data,'location');
+            })
+        }
+    }, [location.pathname]);
+
+    console.log(cartItems, "cartitems");
     return (
         <>
             <header className="w-full bg-white sticky top-0 shadow-md z-40 px-4" style={{ padding: "5px 30px" }}>
@@ -95,62 +109,63 @@ export default function ShoppingHeader() {
                         <NavLinks />
                     </div>
                     <div className='md:hidden block cursor-pointer' onClick={() => setIstoggleHeader(!istoggleheader)}>
-                    <Sheet open={istoggleheader} onOpenChange={() => setIstoggleHeader(!istoggleheader)}>
+                        <Sheet open={istoggleheader} onOpenChange={() => setIstoggleHeader(!istoggleheader)}>
 
-                        <MenuIcon />
-                        <SheetContent side='left' className={'w-[250px]'}>
-                            <div className="toggleHeader shadow-lg">
+                            <MenuIcon />
+                            <SheetContent side='left' className={'w-[250px]'}>
+                                <div className="toggleHeader shadow-lg">
 
-                    <button style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", background: "transparent" }}>
-                        <CloseIcon style={{ padding: "5px", borderRadius: "50px", backgroundColor: "gray", fontSize: "40px" }} onClick={() => setIstoggleHeader(!istoggleheader)} />
-                    </button>
+                                    <button style={{ textAlign: "right", display: "flex", justifyContent: "flex-end", background: "transparent" }}>
+                                        <CloseIcon style={{ padding: "5px", borderRadius: "50px", backgroundColor: "gray", fontSize: "40px" }} onClick={() => setIstoggleHeader(!istoggleheader)} />
+                                    </button>
 
-                    <div className='flex flex-col gap-5'>
-                        <NavLink setIstoggleHeader={setIstoggleHeader} istoggleheader={istoggleheader} />
-                        <div className='nav-icons-profile flex flex-col gap-5 ' >
-                            <div onClick={()=>{handleShopClick(),setIstoggleHeader(!istoggleheader)}}>
-                                <span style={{ fontSize: "18px ", fontWeight: "bold", margin: "0px 10px 0px 0px" }}>Cart</span>
-                                <ShoppingCartIcon className='cursor-pointer' />
-                            </div>
-                            <div className='flex items-center avtar' style={{ position: "relative" }}>
+                                    <div className='flex flex-col gap-5'>
+                                        <NavLink setIstoggleHeader={setIstoggleHeader} istoggleheader={istoggleheader} />
+                                        <div className='nav-icons-profile flex flex-col gap-5 ' >
+                                            <div onClick={() => { handleShopClick(), setIstoggleHeader(!istoggleheader) }}>
+                                                <span style={{ fontSize: "18px ", fontWeight: "bold", margin: "0px 10px 0px 0px" }}>Cart</span>
+                                                <ShoppingCartIcon className='cursor-pointer' />
+                                            </div>
+                                            <div className='flex items-center avtar' style={{ position: "relative" }} onClick={() => setIstoggleHeader(!istoggleheader) }>
 
-                                <Avatar
-                                    sx={{ bgcolor: deepOrange[500] }}
-                                    alt="Remy Sharp"
-                                    src="/broken-image.jpg"
-                                    className='cursor-pointer'
-                                >
-                                    {user.username[0].toUpperCase()}
-                                </Avatar>
+                                                <Avatar
+                                                 onClick={() => setIstoggleHeader(!istoggleheader) }
+                                                    sx={{ bgcolor: deepOrange[500] }}
+                                                    alt="Remy Sharp"
+                                                    src="/broken-image.jpg"
+                                                    className='cursor-pointer'
+                                                >
+                                                    {user.username[0].toUpperCase()}
+                                                </Avatar>
 
-                                <div className='shadow-md aboutProfile' style={{ width: "200px", position: "absolute", top: "40px", right: "-30px", display: "flex", flexDirection: "column", padding: "10px 10px", backgroundColor: "white", display: "none" }}>
-                                    <div>
-                                        <p style={{ fontWeight: "bold" }}>Logged in as: {user.username}</p>
-                                    </div>
-                                    <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "10px 0px" }} onClick={() =>{ navigate("/shop/account"),setIstoggleHeader(!istoggleheader)}}>
-                                        <PersonAddAltIcon />
-                                        <span style={{ margin: "0px" }}> Account</span>
-                                    </div>
-                                    <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "0px 0px 0px 0px" }} onClick={() => dispatch(Logout())}>
-                                        <LogoutIcon />
-                                        <span style={{ margin: "0px" }}> Logout</span>
+                                                <div className='shadow-md aboutProfile' style={{ width: "200px", position: "absolute", top: "40px", right: "-30px", display: "flex", flexDirection: "column", padding: "10px 10px", backgroundColor: "white", display: "none" }}>
+                                                    <div>
+                                                        <p style={{ fontWeight: "bold" }}>Logged in as: {user.username}</p>
+                                                    </div>
+                                                    <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "10px 0px" }} onClick={() => { navigate("/shop/account"), setIstoggleHeader(!istoggleheader) }}>
+                                                        <PersonAddAltIcon />
+                                                        <span style={{ margin: "0px" }}> Account</span>
+                                                    </div>
+                                                    <div className='flex gap-2 items-center' style={{ cursor: "pointer", margin: "0px 0px 0px 0px" }} onClick={() => dispatch(Logout())}>
+                                                        <LogoutIcon />
+                                                        <span style={{ margin: "0px" }}> Logout</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-                        </SheetContent>
+                            </SheetContent>
                         </Sheet>
                     </div>
                     <div className='hidden nav-icons-profile md:flex gap-2 items-center' >
                         <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
-                            <div className='relative' style={{padding:"3px"}}>
-                            <ShoppingCartIcon className='cursor-pointer relative' onClick={() => handleShopClick()} />
-                            <span className='absolute top-[-7px] right-[0] text-sm font-bold'>{cartItems?.length}</span>
+                            <div className='relative' style={{ padding: "3px" }}>
+                                <ShoppingCartIcon className='cursor-pointer relative' onClick={() => handleShopClick()} />
+                                <span className='absolute top-[-7px] right-[0] text-sm font-bold'>{cartItems?.length || 0}</span>
                             </div>
-                            <CartWrapper cartItems={cartItems} setOpenCartSheet={setOpenCartSheet}/>
+                            <CartWrapper cartItems={cartItems} setOpenCartSheet={setOpenCartSheet} />
                         </Sheet>
                         <div className='flex items-center avtar' style={{ position: "relative" }}>
 
@@ -183,7 +198,7 @@ export default function ShoppingHeader() {
 
 
             </header>
-           
+
         </>
     );
 }

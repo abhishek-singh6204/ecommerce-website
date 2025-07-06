@@ -5,12 +5,12 @@
     z-index: 100;
     background-color: #fff;
     width: 250px;
-    padding: 20px 25px;
+    padding: 20px 25px 0px 30px;
     height: auto;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    /* gap: 30px; */
 }
 .avtar:hover .aboutProfile{
     display: block !important;

@@ -44,6 +44,9 @@ form{
  .loginSignup{
 
  }
+ .orderDetail{
+    padding: 20px 50px;
+ }
 @media screen and (max-width:876px) {
     .abcde{
     padding: 0px 30px !important;
@@ -64,5 +67,8 @@ form{
  }
  .bgLoginSignup{
     display: none !important;
+ }
+  .orderDetail{
+    padding: 0px !important;
  }
 }
